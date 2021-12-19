@@ -3,8 +3,8 @@ import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 import numpy as np
 import csv
-import os
-import sys
+# import os
+# import sys
 
 
 def read_csv(filePath, x_i, y_i):
@@ -161,10 +161,10 @@ def error_window(msg):
     sub_window.close()
 
 
-def resource_path(relative):  #アイコン表示用にアイコンファイルのパスを取得する．
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative)
-    return path.join(path.abspath('.'), relative)
+# def resource_path(relative):  #アイコン表示用にアイコンファイルのパスを取得する．
+#     if hasattr(sys, '_MEIPASS'):
+#         return os.path.join(sys._MEIPASS, relative)
+#     return path.join(path.abspath('.'), relative)
 
 
 sg.theme('Default')
@@ -193,7 +193,7 @@ main_layout = [[sg.Text('CSVファイルとフィッティング関数を選択�
                    sg.InputText('1', size=(3, 1), key='func_order')
                ], [sg.Button('実行', key='go', expand_x=True)]]
 
-icon_path = resource_path("graph.ico")
+# icon_path = resource_path("graph.ico")
 
 main_window = sg.Window('フィッティング',
                         main_layout,
@@ -201,7 +201,8 @@ main_window = sg.Window('フィッティング',
                         auto_size_buttons=True,
                         auto_size_text=True,
                         finalize=True,
-                        icon=icon_path)
+                        icon="graph.ico"#icon_path
+                        )
 
 main_window.set_min_size((470, 180))
 
