@@ -44,19 +44,39 @@ CSV_file_Path = "data.csv"
 # M0
 V_target, V_ff, V_out = read_csv(CSV_file_Path, 0, 3, 6)
 popt_0_ff, pcov_0_ff = curve_fit(func_FF, V_target, V_out)
-popt_0_fb, pcov_0_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
+v_out_buff = []
+for i in range(len(V_target)):
+    v_out_buff.append(
+        V_out[i] -
+        func_FF(V_target[i], popt_0_ff[0], popt_0_ff[1], popt_0_ff[2]))
+popt_0_fb, pcov_0_fb = curve_fit(func_FB, (V_target, V_ff), v_out_buff)
 # M1
 V_target, V_ff, V_out = read_csv(CSV_file_Path, 1, 4, 7)
 popt_1_ff, pcov_1_ff = curve_fit(func_FF, V_target, V_out)
-popt_1_fb, pcov_1_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
+v_out_buff = []
+for i in range(len(V_target)):
+    v_out_buff.append(
+        V_out[i] -
+        func_FF(V_target[i], popt_1_ff[0], popt_1_ff[1], popt_1_ff[2]))
+popt_1_fb, pcov_1_fb = curve_fit(func_FB, (V_target, V_ff), v_out_buff)
 # M2
 V_target, V_ff, V_out = read_csv(CSV_file_Path, 2, 5, 8)
 popt_2_ff, pcov_2_ff = curve_fit(func_FF, V_target, V_out)
-popt_2_fb, pcov_2_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
+v_out_buff = []
+for i in range(len(V_target)):
+    v_out_buff.append(
+        V_out[i] -
+        func_FF(V_target[i], popt_2_ff[0], popt_2_ff[1], popt_2_ff[2]))
+popt_2_fb, pcov_2_fb = curve_fit(func_FB, (V_target, V_ff), v_out_buff)
 # M3
 V_target, V_ff, V_out = read_csv(CSV_file_Path, 2, 5, 8)
 popt_3_ff, pcov_3_ff = curve_fit(func_FF, V_target, V_out)
-popt_3_fb, pcov_3_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
+v_out_buff = []
+for i in range(len(V_target)):
+    v_out_buff.append(
+        V_out[i] -
+        func_FF(V_target[i], popt_3_ff[0], popt_3_ff[1], popt_3_ff[2]))
+popt_3_fb, pcov_3_fb = curve_fit(func_FB, (V_target, V_ff), v_out_buff)
 
 # 結果
 print("制御器 ", "=" * 20)
