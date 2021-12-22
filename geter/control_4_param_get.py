@@ -21,11 +21,16 @@ def read_csv(filePath, v_in, v_ff, v_out):
 
 
 ############################################################################
-def func(v_t, v_ff, vk_1, vk_2, vk_3, vk_ff):
+#フィードフォワード制御器
+def func_FF(v_t, vk_1, vk_2, vk_3):
     output = 0
-    #フィードフォワード制御器
     output += vk_1 * v_t + vk_2 * v_t**2 + vk_3 * v_t**3
-    #フィードバック制御器
+    return output
+
+
+#フィードバック制御器
+def func_FB(v_t, v_ff, vk_ff):
+    output = 0
     output += (v_t - v_ff) * vk_ff
     return output
 
@@ -37,21 +42,26 @@ CSV_file_Path = "data.csv"
 
 #制御器　近似曲線算出
 # M0
-V_target, V_ff, V_out = read_csv(CSV_file_Path, 0, 4, 8)
-popt_0, pcov = curve_fit(func, (V_target, V_ff), V_out)
+V_target, V_ff, V_out = read_csv(CSV_file_Path, 0, 3, 6)
+popt_0_ff, pcov_0_ff = curve_fit(func_FF, V_target, V_out)
+popt_0_fb, pcov_0_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
 # M1
-V_target, V_ff, V_out = read_csv(CSV_file_Path, 1, 5, 9)
-popt_1, pcov = curve_fit(func, (V_target, V_ff), V_out)
+V_target, V_ff, V_out = read_csv(CSV_file_Path, 1, 4, 7)
+popt_1_ff, pcov_1_ff = curve_fit(func_FF, V_target, V_out)
+popt_1_fb, pcov_1_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
 # M2
-V_target, V_ff, V_out = read_csv(CSV_file_Path, 2, 6, 10)
-popt_2, pcov = curve_fit(func, (V_target, V_ff), V_out)
+V_target, V_ff, V_out = read_csv(CSV_file_Path, 2, 5, 8)
+popt_2_ff, pcov_2_ff = curve_fit(func_FF, V_target, V_out)
+popt_2_fb, pcov_2_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
 # M3
-V_target, V_ff, V_out = read_csv(CSV_file_Path, 3, 7, 11)
-popt_3, pcov = curve_fit(func, (V_target, V_ff), V_out)
+V_target, V_ff, V_out = read_csv(CSV_file_Path, 2, 5, 8)
+popt_3_ff, pcov_3_ff = curve_fit(func_FF, V_target, V_out)
+popt_3_fb, pcov_3_fb = curve_fit(func_FB, (V_target, V_ff), V_out)
 
+# 結果
 print("制御器 ", "=" * 20)
 print("１次の係数, ２次の係数, ３次の係数, フィードバックの係数")
-print("M0: ", popt_0)
-print("M1: ", popt_1)
-print("M2: ", popt_2)
-print("M3: ", popt_3)
+print("M0: FF -> ", popt_0_ff, ", FB -> ", popt_0_fb)
+print("M1: FF -> ", popt_1_ff, ", FB -> ", popt_1_fb)
+print("M2: FF -> ", popt_2_ff, ", FB -> ", popt_2_fb)
+print("M3: FF -> ", popt_3_ff, ", FB -> ", popt_3_fb)
