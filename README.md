@@ -7,7 +7,7 @@
 conda env create --file kinji_env.yaml
 ```
 ``` PowerShell
-conda env create --file k_param_.yaml
+conda env create --file k_param_env.yaml
 ```
 
 環境を起動
