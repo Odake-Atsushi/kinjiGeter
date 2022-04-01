@@ -6,10 +6,16 @@
 ``` PowerShell
 conda env create --file kinji_env.yaml
 ```
+``` PowerShell
+conda env create --file k_param_.yaml
+```
 
 環境を起動
 ``` PowerShell
 conda activate kinjiGeter
+```
+``` PowerShell
+conda activate kinjiGeterP
 ```
 
 プログラムは，`src`の中に格納されている．
