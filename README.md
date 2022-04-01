@@ -34,5 +34,6 @@ python kinjiGeter.py
 ``` PowerShell
 cd geter
 python <動かすプログラム>
+```
 
 これで起動できるはず．
