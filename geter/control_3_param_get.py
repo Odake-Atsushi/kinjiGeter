@@ -1,35 +1,45 @@
 from scipy.optimize import curve_fit
 import csv
 
+##############################################################
+# データのパスを入力
+##############################################################
+CSV_file_Path = "data.csv"
+##############################################################
+
 
 def read_csv(filePath, v_in, v_ff, v_out):
-    skip_data = 1
     # CSVファイルから読み取った値を格納する．
     v_in_csv = []
     v_ff_csv = []
     v_out_csv = []
     # ファイルを開いてデータを抽出する．
-    with open(str(filePath)) as f:
+    with open(str(filePath), encoding='utf8') as f:
         reader = csv.reader(f)
+        header = next(reader)
+        data_len = len(header)
         for row in reader:
-            v_in_csv.append(float(row[int(v_in)]))
-            v_ff_csv.append(float(row[int(v_ff)]))
-            v_out_csv.append(float(row[int(v_out)]))
-    return  v_in_csv[skip_data:],\
-            v_ff_csv[skip_data:],\
-            v_out_csv[skip_data:]
+            if len(row) == data_len:
+                v_in_csv.append(float(row[int(v_in)]))
+                v_ff_csv.append(float(row[int(v_ff)]))
+                v_out_csv.append(float(row[int(v_out)]))
+            else:
+                pass
+    return v_in_csv, v_ff_csv, v_out_csv
 
 
 ############################################################################
 #フィードフォワード制御器
-def func_FF(v_t, vk_1, vk_2, vk_3):
+def func_FF(V, vk_1, vk_2, vk_3):
+    v_t = V
     output = 0
     output += vk_1 * v_t + vk_2 * v_t**2 + vk_3 * v_t**3
     return output
 
 
 #フィードバック制御器
-def func_FB(v_t, v_ff, vk_ff):
+def func_FB(V, vk_ff):
+    v_t, v_ff = V
     output = 0
     output += (v_t - v_ff) * vk_ff
     return output
@@ -38,8 +48,6 @@ def func_FB(v_t, v_ff, vk_ff):
 ############################################################################
 # main
 ############################################################################
-CSV_file_Path = "data.csv"
-
 #制御器　近似曲線算出
 # M0
 V_target, V_ff, V_out = read_csv(CSV_file_Path, 0, 3, 6)
@@ -72,6 +80,6 @@ popt_2_fb, pcov_2_fb = curve_fit(func_FB, (V_target, V_ff), v_out_buff)
 # 結果
 print("制御器 ", "=" * 20)
 print("１次の係数, ２次の係数, ３次の係数, フィードバックの係数")
-print("M0: FF -> ", popt_0_ff, ", FB -> ", popt_0_fb)
-print("M1: FF -> ", popt_1_ff, ", FB -> ", popt_1_fb)
-print("M2: FF -> ", popt_2_ff, ", FB -> ", popt_2_fb)
+print("M0: FF -> ", popt_0_ff, ",\tFB -> ", popt_0_fb)
+print("M1: FF -> ", popt_1_ff, ",\tFB -> ", popt_1_fb)
+print("M2: FF -> ", popt_2_ff, ",\tFB -> ", popt_2_fb)
